@@ -1,0 +1,71 @@
+---
+title: "index"
+author: "Jorge VM"
+date: "2025-02-28"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+library(dplyr)
+library(languageR)
+library(untidydata)
+```
+
+
+```{r}
+data(package = "languageR") 
+data(package = "untidydata")
+
+```
+
+```{r}
+lg_div <- language_diversity |>
+  pivot_wider(
+    names_from = "Measurement",
+    values_from = "Value"
+  )
+  
+```
+
+#descriptive statistics
+```{r}
+lg_div|>
+  group_by(Continent)|>
+  summarise(
+    langmean = mean(Langs),
+    aremean = mean(Area)
+  )
+
+```
+
+#model
+```{r}
+model1 <- lm(
+  Langs ~ Area,
+  data = lg_div
+)
+print(model1)
+```
+
+#linear model
+```{r}
+lg_div|>
+  ggplot() +
+  aes(x = Langs , y = Area) +  
+  labs(x = "Languages", y = "Area", title = "Number of languages by area") + 
+  geom_point() +
+  geom_smooth(method = "lm")
+
+```
+
+#The scatter plot suggests that there is a correlation between an area size and number of languages spoken. The area size includes information about a country size and the number of languages spoken in that territory. The correlation between these two variables is sound, as it is expected that in general, a bigger territory will have more population and within it, more language diversity.    
+
+
+
+
+
+
+
+
+
